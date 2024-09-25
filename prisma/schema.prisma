@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Aromachemical {
+  id                Int             @id @default(autoincrement())
+  name              String          @unique
+  scent_category    ScentCategory[]
+  odor_strength     OdorStrength
+  persistence       Persistence
+  dilution_material Solvent
+  description       String
+  IFRA_limit        String
+  supplier          Supplier
+  formula_line      FormulaLine[]
+}
+
+model ScentCategory {
+  id             Int             @id @default(autoincrement())
+  category       String
+  aroma_chemical Aromachemical[]
+}
+
+enum OdorStrength {
+  Very_weak
+  Weak
+  Medium
+  Strong
+  Very_strong
+}
+
+enum Supplier {
+  IFF
+  Firmenich
+  Symrise
+  Givaudan
+  Hekserij
+}
+
+enum Persistence {
+  Top
+  High
+  Middle
+  Bottom
+  Base
+}
+
+enum Solvent {
+  DPG
+  Perfumers_alcohol
+  IPM
+}
+
+model FormulaLine {
+  id                Int           @id @default(autoincrement())
+  aroma_chemical    Aromachemical @relation(fields: [aroma_chemical_id], references: [id])
+  aroma_chemical_id Int
+  quantity          Float
+  formula           Formula       @relation(fields: [formula_id], references: [id])
+  formula_id        Int
+}
+
+model Formula {
+  id           Int           @id @default(autoincrement())
+  title        String
+  formula_line FormulaLine[]
+}
