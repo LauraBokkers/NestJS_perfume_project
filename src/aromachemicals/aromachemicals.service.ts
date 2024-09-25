@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAromachemicalDto } from './dto/create-aromachemical.dto';
-import { UpdateAromachemicalDto } from './dto/update-aromachemical.dto';
+import { Prisma } from '@prisma/client';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class AromachemicalsService {
-  create(createAromachemicalDto: CreateAromachemicalDto) {
-    return 'This action adds a new aromachemical';
+  constructor(private readonly databaseService: DatabaseService) { }
+
+  async create(createAromachemicalDto: Prisma.AromachemicalCreateInput) {
+    return this.databaseService.aromachemical.create({
+      data: createAromachemicalDto
+    });
   }
 
-  findAll() {
-    return `This action returns all aromachemicals`;
+  async findAll() {
+    return this.databaseService.aromachemical.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} aromachemical`;
+  async findOne(id: number) {
+    return this.databaseService.aromachemical.findUnique({
+      where: {
+        id,
+      }
+    })
   }
 
-  update(id: number, updateAromachemicalDto: UpdateAromachemicalDto) {
-    return `This action updates a #${id} aromachemical`;
+  async update(id: number, updateAromachemicalDto: Prisma.AromachemicalUpdateInput) {
+    return this.databaseService.aromachemical.update({
+      where: {
+        id,
+      },
+      data: updateAromachemicalDto,
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} aromachemical`;
+  async remove(id: number) {
+    return this.databaseService.aromachemical.delete({
+      where: {
+        id,
+      }
+    })
   }
 }

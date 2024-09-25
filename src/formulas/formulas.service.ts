@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFormulaDto } from './dto/create-formula.dto';
-import { UpdateFormulaDto } from './dto/update-formula.dto';
+import { Prisma } from '@prisma/client';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class FormulasService {
-  create(createFormulaDto: CreateFormulaDto) {
-    return 'This action adds a new formula';
+  constructor(private readonly databaseService: DatabaseService) { }
+
+  async create(createFormulaDto: Prisma.FormulaCreateInput) {
+    return this.databaseService.formula.create({
+      data: createFormulaDto
+    });
   }
 
-  findAll() {
-    return `This action returns all formulas`;
+  async findAll() {
+    return this.databaseService.formula.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} formula`;
+  async findOne(id: number) {
+    return this.databaseService.formula.findUnique({
+      where: {
+        id,
+      }
+    })
   }
 
-  update(id: number, updateFormulaDto: UpdateFormulaDto) {
-    return `This action updates a #${id} formula`;
+  async update(id: number, updateFormulaDto: Prisma.FormulaUpdateInput) {
+    return this.databaseService.formula.update({
+      where: {
+        id,
+      },
+      data: updateFormulaDto,
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} formula`;
+  async remove(id: number) {
+    return this.databaseService.formula.delete({
+      where: {
+        id,
+      }
+    })
   }
 }
