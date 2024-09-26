@@ -6,12 +6,6 @@ import { DatabaseService } from 'src/database/database.service';
 export class AromachemicalsService {
   constructor(private readonly databaseService: DatabaseService) { }
 
-  async create(createAromachemicalDto: Prisma.AromachemicalCreateInput) {
-    return this.databaseService.aromachemical.create({
-      data: createAromachemicalDto
-    });
-  }
-
   async findAll() {
     return this.databaseService.aromachemical.findMany()
   }
@@ -69,6 +63,23 @@ export class AromachemicalsService {
       }
     })
   }
+
+
+
+  async createAromachemical(createAromachemicalDto: Prisma.AromachemicalCreateInput) {
+    return this.databaseService.aromachemical.create({
+      data: createAromachemicalDto
+    });
+  }
+
+
+  async createScentCategory(createScentCategoryDto: Prisma.ScentCategoryCreateInput) {
+    return this.databaseService.scentCategory.create({
+      data: createScentCategoryDto
+    });
+  }
+
+
 
 
 

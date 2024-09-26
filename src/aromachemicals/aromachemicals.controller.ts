@@ -7,11 +7,6 @@ import { OdorStrength, Persistence, Prisma, Supplier } from '@prisma/client';
 export class AromachemicalsController {
   constructor(private readonly aromachemicalsService: AromachemicalsService) { }
 
-  @Post()
-  create(@Body() createAromachemicalDto: Prisma.AromachemicalCreateInput) {
-    return this.aromachemicalsService.create(createAromachemicalDto);
-  }
-
   @Get()
   findAll() {
     return this.aromachemicalsService.findAll();
@@ -42,6 +37,16 @@ export class AromachemicalsController {
     return this.aromachemicalsService.findByOdorStrength(odor_strength);
   }
 
+
+  @Post()
+  createAromachemical(@Body() createAromachemicalDto: Prisma.AromachemicalCreateInput) {
+    return this.aromachemicalsService.createAromachemical(createAromachemicalDto);
+  }
+
+  @Post('scent-category')
+  createScentCategory(@Body() createScentCategoryDto: Prisma.ScentCategoryCreateInput) {
+    return this.aromachemicalsService.createScentCategory(createScentCategoryDto);
+  }
 
 
 
