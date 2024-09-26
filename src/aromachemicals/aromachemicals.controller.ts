@@ -64,7 +64,14 @@ export class AromachemicalsController {
 
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.aromachemicalsService.remove(+id);
+  removeAromachemical(@Param('id') id: string) {
+    return this.aromachemicalsService.removeAromachemical(+id);
   }
+
+  @Delete('delete-scent-category/:id')
+  removeScentCategory(@Param('id') id: string) {
+    return this.aromachemicalsService.removeScentCategory(+id);
+  }
+
+
 }

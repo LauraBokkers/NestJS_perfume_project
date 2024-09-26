@@ -103,11 +103,20 @@ export class AromachemicalsService {
 
 
 
-  async remove(id: number) {
+  async removeAromachemical(id: number) {
     return this.databaseService.aromachemical.delete({
       where: {
         id,
       }
     })
   }
+
+  async removeScentCategory(id: number) {
+    return this.databaseService.scentCategory.delete({
+      where: {
+        id,
+      }
+    })
+  }
+
 }
