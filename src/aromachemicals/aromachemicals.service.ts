@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Persistence, Prisma } from '@prisma/client';
+import { OdorStrength, Persistence, Prisma, Supplier } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
@@ -54,6 +54,21 @@ export class AromachemicalsService {
     })
   }
 
+  async findBySupplier(supplier: Supplier) {
+    return this.databaseService.aromachemical.findMany({
+      where: {
+        supplier: supplier
+      }
+    })
+  }
+
+  async findByOdorStrength(odor_strength: OdorStrength) {
+    return this.databaseService.aromachemical.findMany({
+      where: {
+        odor_strength: odor_strength
+      }
+    })
+  }
 
 
 

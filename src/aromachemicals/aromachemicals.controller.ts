@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseEnumPipe } from '@nestjs/common';
 import { AromachemicalsService } from './aromachemicals.service';
-import { Persistence, Prisma } from '@prisma/client';
+import { OdorStrength, Persistence, Prisma, Supplier } from '@prisma/client';
 
 
 @Controller('aromachemicals')
@@ -31,6 +31,17 @@ export class AromachemicalsController {
   findByPersistence(@Param('persistence', new ParseEnumPipe(Persistence)) persistence: Persistence) {
     return this.aromachemicalsService.findByPersistence(persistence);
   }
+
+  @Get('get-by-supplier/:supplier')
+  findBySupplier(@Param('supplier', new ParseEnumPipe(Supplier)) supplier: Supplier) {
+    return this.aromachemicalsService.findBySupplier(supplier);
+  }
+
+  @Get('get-by-odor-strength/:odor_strength')
+  findByOdorStrength(@Param('odor_strength', new ParseEnumPipe(OdorStrength)) odor_strength: OdorStrength) {
+    return this.aromachemicalsService.findByOdorStrength(odor_strength);
+  }
+
 
 
 
