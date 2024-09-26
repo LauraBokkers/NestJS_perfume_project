@@ -81,42 +81,77 @@ export class AromachemicalsService {
 
 
 
-  async updateAromachecimal(id: number, updateAromachemicalDto: Prisma.AromachemicalUpdateInput) {
+  async updateAromachemical(id: number, updateAromachemicalDto: Prisma.AromachemicalUpdateInput) {
+    // Validation: Check if the Aromachemical exists before updating
+    const aromachemical = await this.databaseService.aromachemical.findUnique({
+      where: { id },
+    });
+
+    if (!aromachemical) {
+      throw new NotFoundException(`Aromachemical with ID '${id}' not found.`);
+    }
+
     return this.databaseService.aromachemical.update({
       where: {
         id,
       },
       data: updateAromachemicalDto,
-    })
+    });
   }
 
 
   async updateScentCategory(id: number, updateScentCategoryDto: Prisma.ScentCategoryUpdateInput) {
+    // Validation: Check if the Scent Category exists before updating
+    const scentCategory = await this.databaseService.scentCategory.findUnique({
+      where: { id },
+    });
+
+    if (!scentCategory) {
+      throw new NotFoundException(`Scent Category with ID '${id}' not found.`);
+    }
+
     return this.databaseService.scentCategory.update({
       where: {
         id,
       },
       data: updateScentCategoryDto,
-    })
+    });
   }
-
-
 
 
   async removeAromachemical(id: number) {
+    // Validation: Check if the Aromachemical exists before deletion
+    const aromachemical = await this.databaseService.aromachemical.findUnique({
+      where: { id },
+    });
+
+    if (!aromachemical) {
+      throw new NotFoundException(`Aromachemical with ID '${id}' not found.`);
+    }
+
     return this.databaseService.aromachemical.delete({
       where: {
         id,
-      }
-    })
+      },
+    });
   }
 
+
   async removeScentCategory(id: number) {
+    // Validation: Check if the Scent Category exists before deletion
+    const scentCategory = await this.databaseService.scentCategory.findUnique({
+      where: { id },
+    });
+
+    if (!scentCategory) {
+      throw new NotFoundException(`Scent Category with ID '${id}' not found.`);
+    }
+
     return this.databaseService.scentCategory.delete({
       where: {
         id,
-      }
-    })
+      },
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseEnumPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseEnumPipe } from '@nestjs/common';
 import { AromachemicalsService } from './aromachemicals.service';
 import { OdorStrength, Persistence, Prisma, Supplier } from '@prisma/client';
 
@@ -52,7 +52,7 @@ export class AromachemicalsController {
 
   @Patch(':id')
   updateAromachemical(@Param('id') id: string, @Body() updateAromachemicalDto: Prisma.AromachemicalCreateInput) {
-    return this.aromachemicalsService.updateAromachecimal(+id, updateAromachemicalDto);
+    return this.aromachemicalsService.updateAromachemical(+id, updateAromachemicalDto);
   }
 
 
