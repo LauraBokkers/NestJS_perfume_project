@@ -29,7 +29,7 @@ export class AromachemicalsController {
 
   @Get('get-by-persistence/:persistence')
   findByPersistence(@Param('persistence', new ParseEnumPipe(Persistence)) persistence: Persistence) {
-    return this.aromachemicalsService.findByCategory(persistence);
+    return this.aromachemicalsService.findByPersistence(persistence);
   }
 
 

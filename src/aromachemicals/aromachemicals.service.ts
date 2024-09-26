@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Persistence, Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
@@ -25,11 +25,21 @@ export class AromachemicalsService {
   }
 
   async findByCategory(category: string) {
+
+    // Validation: Check if the category exists
+    const categoryExists = await this.databaseService.scentCategory.findFirst({
+      where: { category },
+    });
+
+    if (!categoryExists) {
+      throw new NotFoundException(`Category '${category}' does not exist.`);
+    }
+
     return this.databaseService.aromachemical.findMany({
       where: {
         scent_category: {
           some: {
-            key: category
+            key: categoryExists.category
           }
         }
       }
