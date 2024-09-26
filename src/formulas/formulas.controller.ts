@@ -2,6 +2,17 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from 
 import { FormulasService } from './formulas.service';
 import { Prisma } from '@prisma/client';
 
+
+export class CreateFormulaDto {
+  title: string;
+  formulaLines: {
+    aroma_chemical_id: number;
+    quantity: number;
+  }[];
+}
+
+
+
 @Controller('formulas')
 export class FormulasController {
   constructor(private readonly formulasService: FormulasService) { }
@@ -30,10 +41,12 @@ export class FormulasController {
 
 
 
+
   @Post()
-  create(@Body() createFormulaDto: Prisma.FormulaCreateInput) {
+  create(@Body() createFormulaDto: CreateFormulaDto) {
     return this.formulasService.create(createFormulaDto);
   }
+
 
 
   @Patch(':id')
@@ -46,3 +59,6 @@ export class FormulasController {
     return this.formulasService.remove(+id);
   }
 }
+
+
+

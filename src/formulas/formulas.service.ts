@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
+import { CreateFormulaDto } from './formulas.controller';
 
 @Injectable()
 export class FormulasService {
@@ -112,12 +113,29 @@ export class FormulasService {
 
 
 
-
-  async create(createFormulaDto: Prisma.FormulaCreateInput) {
+  async create(createFormulaDto: CreateFormulaDto) {
     return this.databaseService.formula.create({
-      data: createFormulaDto
+      data: {
+        title: createFormulaDto.title, // Set the formula title
+        formula_line: {
+          create: createFormulaDto.formulaLines.map((line) => ({
+            aroma_chemical: { connect: { id: line.aroma_chemical_id } }, // Connect the aromachemical by id
+            quantity: line.quantity,  // Set the quantity
+          })),
+        },
+      },
+      include: {
+        formula_line: true,  // Include formula lines in the response
+      },
     });
   }
+
+
+
+
+
+
+
 
   async update(id: number, updateFormulaDto: Prisma.FormulaUpdateInput) {
     return this.databaseService.formula.update({
