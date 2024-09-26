@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
-import { CreateFormulaDto } from './formulas.controller';
+import { CreateFormulaDto, UpdateFormulaDto } from './formulas.controller';
 
 @Injectable()
 export class FormulasService {
@@ -111,8 +111,6 @@ export class FormulasService {
 
 
 
-
-
   async create(createFormulaDto: CreateFormulaDto) {
     return this.databaseService.formula.create({
       data: {
@@ -133,24 +131,46 @@ export class FormulasService {
 
 
 
-
-
-
-
-  async update(id: number, updateFormulaDto: Prisma.FormulaUpdateInput) {
+  async update(id: number, updateFormulaDto: UpdateFormulaDto) {
     return this.databaseService.formula.update({
-      where: {
-        id,
+      where: { id },
+      data: {
+        title: updateFormulaDto.title, // Update the formula title if provided
+        formula_line: {
+          upsert: updateFormulaDto.formulaLines.map((line) => ({
+            where: { id: line.id ?? 0 }, // Use the line ID if updating an existing line, or a default value for new ones
+            update: {
+              aroma_chemical_id: line.aroma_chemical_id,
+              quantity: line.quantity,
+            },
+            create: {
+              aroma_chemical_id: line.aroma_chemical_id,
+              quantity: line.quantity,
+            },
+          })),
+        },
       },
-      data: updateFormulaDto,
-    })
+      include: {
+        formula_line: true,  // Include the updated formula lines in the response
+      },
+    });
   }
 
+
   async remove(id: number) {
+    // First, delete all associated FormulaLines
+    await this.databaseService.formulaLine.deleteMany({
+      where: {
+        formula_id: id,  // Delete all FormulaLines where the formula_id matches the given id
+      },
+    });
+
+    // Now, delete the Formula itself
     return this.databaseService.formula.delete({
       where: {
         id,
-      }
-    })
+      },
+    });
   }
+
 }

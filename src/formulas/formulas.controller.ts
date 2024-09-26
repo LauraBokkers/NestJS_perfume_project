@@ -11,6 +11,16 @@ export class CreateFormulaDto {
   }[];
 }
 
+export class UpdateFormulaDto {
+  title?: string;
+  formulaLines?: {
+    id?: number; // Optional for updating existing lines
+    aroma_chemical_id: number;
+    quantity: number;
+  }[];
+}
+
+
 
 
 @Controller('formulas')
@@ -41,7 +51,6 @@ export class FormulasController {
 
 
 
-
   @Post()
   create(@Body() createFormulaDto: CreateFormulaDto) {
     return this.formulasService.create(createFormulaDto);
@@ -50,13 +59,16 @@ export class FormulasController {
 
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFormulaDto: Prisma.FormulaUpdateInput) {
-    return this.formulasService.update(+id, updateFormulaDto);
+  async updateFormula(@Param('id', ParseIntPipe) id: number, @Body() updateFormulaDto: CreateFormulaDto,) {
+    return this.formulasService.update(id, updateFormulaDto);
   }
 
+
+
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.formulasService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.formulasService.remove(id);
   }
 }
 
