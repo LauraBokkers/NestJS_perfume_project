@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { FormulasService } from './formulas.service';
 import { Prisma } from '@prisma/client';
 
@@ -6,20 +6,35 @@ import { Prisma } from '@prisma/client';
 export class FormulasController {
   constructor(private readonly formulasService: FormulasService) { }
 
-  @Post()
-  create(@Body() createFormulaDto: Prisma.FormulaCreateInput) {
-    return this.formulasService.create(createFormulaDto);
-  }
 
   @Get()
   findAll() {
     return this.formulasService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.formulasService.findOne(+id);
+  @Get('get-formula-by-id/:id')
+  findOneById(@Param('id') id: string) {
+    return this.formulasService.findOneById(+id);
   }
+
+  @Get('get-formula-by-title/:title')
+  findOneByName(@Param('title') title: string) {
+    return this.formulasService.findOneByName(title);
+  }
+
+  @Get('get-formulas-including/:aromachemicalId')
+  findAllByAromachemicalId(@Param('aromachemicalId', ParseIntPipe) aromachemicalId: number) {
+    return this.formulasService.findAllByAromachemicalId(aromachemicalId);
+  }
+
+
+
+
+  @Post()
+  create(@Body() createFormulaDto: Prisma.FormulaCreateInput) {
+    return this.formulasService.create(createFormulaDto);
+  }
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFormulaDto: Prisma.FormulaUpdateInput) {
