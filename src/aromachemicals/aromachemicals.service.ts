@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Persistence, Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
@@ -23,6 +23,29 @@ export class AromachemicalsService {
       }
     })
   }
+
+  async findByCategory(category: string) {
+    return this.databaseService.aromachemical.findMany({
+      where: {
+        scent_category: {
+          some: {
+            key: category
+          }
+        }
+      }
+    })
+  }
+
+  async findByPersistence(persistence: Persistence) {
+    return this.databaseService.aromachemical.findMany({
+      where: {
+        persistence: persistence
+      }
+    })
+  }
+
+
+
 
   async update(id: number, updateAromachemicalDto: Prisma.AromachemicalUpdateInput) {
     return this.databaseService.aromachemical.update({

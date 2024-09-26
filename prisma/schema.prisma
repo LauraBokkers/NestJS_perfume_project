@@ -20,18 +20,19 @@ model Aromachemical {
   id                Int             @id @default(autoincrement())
   name              String          @unique
   scent_category    ScentCategory[]
-  odor_strength     OdorStrength
-  persistence       Persistence
-  dilution_material Solvent
-  description       String
-  IFRA_limit        String
-  supplier          Supplier
+  odor_strength     OdorStrength?
+  persistence       Persistence?
+  dilution_material Solvent?
+  description       String?
+  IFRA_limit        String?
+  supplier          Supplier?
   formula_line      FormulaLine[]
 }
 
 model ScentCategory {
   id             Int             @id @default(autoincrement())
   category       String
+  key            String
   aroma_chemical Aromachemical[]
 }
 
@@ -76,6 +77,8 @@ model FormulaLine {
 
 model Formula {
   id           Int           @id @default(autoincrement())
-  title        String
+  title        String        @unique
   formula_line FormulaLine[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }

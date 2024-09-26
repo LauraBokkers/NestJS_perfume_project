@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseEnumPipe } from '@nestjs/common';
 import { AromachemicalsService } from './aromachemicals.service';
-import { Prisma } from '@prisma/client';
+import { Persistence, Prisma } from '@prisma/client';
+
 
 @Controller('aromachemicals')
 export class AromachemicalsController {
@@ -20,6 +21,18 @@ export class AromachemicalsController {
   findOne(@Param('id') id: string) {
     return this.aromachemicalsService.findOne(+id);
   }
+
+  @Get('get-by-category/:category')
+  findByCategory(@Param('category') category: string) {
+    return this.aromachemicalsService.findByCategory(category);
+  }
+
+  @Get('get-by-persistence/:persistence')
+  findByPersistence(@Param('persistence', new ParseEnumPipe(Persistence)) persistence: Persistence) {
+    return this.aromachemicalsService.findByCategory(persistence);
+  }
+
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAromachemicalDto: Prisma.AromachemicalCreateInput) {
