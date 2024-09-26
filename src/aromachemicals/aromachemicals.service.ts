@@ -81,9 +81,7 @@ export class AromachemicalsService {
 
 
 
-
-
-  async update(id: number, updateAromachemicalDto: Prisma.AromachemicalUpdateInput) {
+  async updateAromachecimal(id: number, updateAromachemicalDto: Prisma.AromachemicalUpdateInput) {
     return this.databaseService.aromachemical.update({
       where: {
         id,
@@ -91,6 +89,19 @@ export class AromachemicalsService {
       data: updateAromachemicalDto,
     })
   }
+
+
+  async updateScentCategory(id: number, updateScentCategoryDto: Prisma.ScentCategoryUpdateInput) {
+    return this.databaseService.scentCategory.update({
+      where: {
+        id,
+      },
+      data: updateScentCategoryDto,
+    })
+  }
+
+
+
 
   async remove(id: number) {
     return this.databaseService.aromachemical.delete({

@@ -51,9 +51,17 @@ export class AromachemicalsController {
 
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAromachemicalDto: Prisma.AromachemicalCreateInput) {
-    return this.aromachemicalsService.update(+id, updateAromachemicalDto);
+  updateAromachemical(@Param('id') id: string, @Body() updateAromachemicalDto: Prisma.AromachemicalCreateInput) {
+    return this.aromachemicalsService.updateAromachecimal(+id, updateAromachemicalDto);
   }
+
+
+  @Patch('update-scent-category/:id')
+  updateScentCategory(@Param('id') id: string, @Body() updateScentCategoryDto: Prisma.ScentCategoryCreateInput) {
+    return this.aromachemicalsService.updateScentCategory(+id, updateScentCategoryDto);
+  }
+
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
