@@ -31,8 +31,8 @@ model Aromachemical {
 
 model ScentCategory {
   id             Int             @id @default(autoincrement())
-  category       String
-  key            String
+  category       String          @unique
+  key            String          @unique
   aroma_chemical Aromachemical[]
 }
 
@@ -68,7 +68,7 @@ enum Solvent {
 
 model FormulaLine {
   id                Int           @id @default(autoincrement())
-  aroma_chemical    Aromachemical @relation(fields: [aroma_chemical_id], references: [id])
+  aroma_chemical    Aromachemical @relation(fields: [aroma_chemical_id], references: [id], onDelete: Cascade)
   aroma_chemical_id Int
   quantity          Float
   formula           Formula       @relation(fields: [formula_id], references: [id])
