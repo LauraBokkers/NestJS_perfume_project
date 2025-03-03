@@ -65,7 +65,6 @@ export class FormulasController {
 
 
 
-
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.formulasService.remove(id);

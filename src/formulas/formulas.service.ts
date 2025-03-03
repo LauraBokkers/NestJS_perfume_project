@@ -21,6 +21,7 @@ export class FormulasService {
             quantity: true,
             aroma_chemical: {
               select: {
+                id: true,
                 name: true,
               },
             },
@@ -115,15 +116,6 @@ export class FormulasService {
     return this.databaseService.formula.create({
       data: {
         title: createFormulaDto.title, // Set the formula title
-        formula_line: {
-          create: createFormulaDto.formulaLines.map((line) => ({
-            aroma_chemical: { connect: { id: line.aroma_chemical_id } }, // Connect the aromachemical by id
-            quantity: line.quantity,  // Set the quantity
-          })),
-        },
-      },
-      include: {
-        formula_line: true,  // Include formula lines in the response
       },
     });
   }
