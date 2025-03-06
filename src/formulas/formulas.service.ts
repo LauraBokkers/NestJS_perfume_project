@@ -124,26 +124,25 @@ export class FormulasService {
 
 
   async update(id: number, updateFormulaDto: UpdateFormulaDto) {
+
+    console.log({ updateFormulaDto })
+
     return this.databaseService.formula.update({
       where: { id },
       data: {
-        title: updateFormulaDto.title, // Update the formula title if provided
+        title: updateFormulaDto.title,
         formula_line: {
-          upsert: updateFormulaDto.formulaLines.map((line) => ({
-            where: { id: line.id ?? 0 }, // Use the line ID if updating an existing line, or a default value for new ones
-            update: {
+          deleteMany: {}, // Delete all previous lines
+          createMany: {
+            data: updateFormulaDto.formulaLines.map(line => ({
               aroma_chemical_id: line.aroma_chemical_id,
               quantity: line.quantity,
-            },
-            create: {
-              aroma_chemical_id: line.aroma_chemical_id,
-              quantity: line.quantity,
-            },
-          })),
+            })),
+          }
         },
       },
       include: {
-        formula_line: true,  // Include the updated formula lines in the response
+        formula_line: true,
       },
     });
   }
