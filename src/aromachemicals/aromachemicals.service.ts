@@ -7,7 +7,15 @@ export class AromachemicalsService {
   constructor(private readonly databaseService: DatabaseService) { }
 
   async findAll() {
-    return this.databaseService.aromachemical.findMany()
+    return this.databaseService.aromachemical.findMany({
+      include: {
+        scent_category: {
+          select: {
+            category: true
+          }
+        }
+      }
+    })
   }
 
   async findOne(id: number) {
@@ -17,6 +25,7 @@ export class AromachemicalsService {
       }
     })
   }
+
 
   async findByCategory(category: string) {
 
