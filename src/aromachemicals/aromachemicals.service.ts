@@ -11,6 +11,7 @@ export class AromachemicalsService {
       include: {
         scent_category: {
           select: {
+            id: true,
             category: true
           }
         }
