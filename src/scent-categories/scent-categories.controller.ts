@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ScentCategoriesService } from './scent-categories.service';
 
 @Controller('scent-categories')
@@ -22,6 +22,11 @@ export class ScentCategoriesController {
         @Body('category') category: string
     ) {
         return this.scentCategoriesService.editScentCategory(id, category);
+    }
+
+    @Delete(':id')
+    async delete(@Param('id') id: number) {
+        return this.scentCategoriesService.deleteScentCategory(id);
     }
 
 }

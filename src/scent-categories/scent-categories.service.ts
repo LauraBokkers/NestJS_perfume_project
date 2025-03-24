@@ -41,7 +41,12 @@ export class ScentCategoriesService {
         });
     }
 
-
+    // Delete scent-category
+    async deleteScentCategory(id: number) {
+        return await this.databaseService.scentCategory.delete({
+            where: { id },
+        });
+    }
 
 
 }
