@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { OdorStrength, Persistence, Prisma, Supplier } from '@prisma/client';
+import { OdorStrength, Persistence, Prisma, ScentCategory, Supplier } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
@@ -76,9 +76,17 @@ export class AromachemicalsService {
 
 
 
-  async createAromachemical(createAromachemicalDto: Prisma.AromachemicalCreateInput) {
-    return this.databaseService.aromachemical.create({
-      data: createAromachemicalDto
+  async createAromachemical(createAromachemicalDto: { scent_category: ScentCategory[]; aromachemical: Prisma.AromachemicalCreateInput }) {
+
+    const { scent_category, aromachemical } = createAromachemicalDto
+
+    return await this.databaseService.aromachemical.create({
+      data: {
+        ...aromachemical,
+        scent_category: {
+          connect: scent_category.map((category) => { return { id: category.id } })
+        }
+      },
     });
   }
 

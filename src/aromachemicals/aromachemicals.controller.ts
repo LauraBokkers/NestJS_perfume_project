@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseEnumPipe } from '@nestjs/common';
 import { AromachemicalsService } from './aromachemicals.service';
-import { OdorStrength, Persistence, Prisma, Supplier } from '@prisma/client';
+import { OdorStrength, Persistence, Prisma, ScentCategory, Supplier } from '@prisma/client';
 
 
 @Controller('aromachemicals')
@@ -39,7 +39,7 @@ export class AromachemicalsController {
 
 
   @Post()
-  createAromachemical(@Body() createAromachemicalDto: Prisma.AromachemicalCreateInput) {
+  createAromachemical(@Body() createAromachemicalDto: { scent_category: ScentCategory[]; aromachemical: Prisma.AromachemicalCreateInput }) {
     return this.aromachemicalsService.createAromachemical(createAromachemicalDto);
   }
 
