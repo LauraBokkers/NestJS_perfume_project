@@ -14,6 +14,7 @@ export class ScentCategoriesService {
     }
 
 
+    // Add scent-category
     async create(category: string) {
         const key = category.toLowerCase().replace(/\s+/g, '_');
 
@@ -28,6 +29,19 @@ export class ScentCategoriesService {
             throw new ConflictException('Category already exists');
         }
     }
+
+
+    // Edit scent-category
+    async editScentCategory(id: number, category: string) {
+        const key = category.toLowerCase().replace(/\s+/g, "_");
+
+        return await this.databaseService.scentCategory.update({
+            where: { id },
+            data: { category, key },
+        });
+    }
+
+
 
 
 }
